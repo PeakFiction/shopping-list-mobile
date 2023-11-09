@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/widgets/left_drawer.dart';
+import 'package:shopping_list/screens/shoplist_form.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -6,7 +8,7 @@ class MyHomePage extends StatelessWidget {
   final List<ShopItem> items = [
     ShopItem("View Products", Icons.checklist),
     ShopItem("Add Product", Icons.add_shopping_cart),
-    ShopItem("Logout", Icons.logout),
+    ShopItem("Logout", Icons.logout)
   ];
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -20,12 +22,21 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Shopping List',
         ),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         // Scrolling wrapper widget
         child: Padding(
@@ -86,11 +97,21 @@ class ShopCard extends StatelessWidget {
       child: InkWell(
         // Responsive touch area
         onTap: () {
-          // Show a SnackBar when clicked
+          // Show SnackBar when clicked
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
                 content: Text("You pressed the ${item.name} button!")));
+
+          // Navigate to the appropriate route (depending on the button type)
+          if (item.name == "Add Product") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ShopFormPage(),
+              ),
+            );
+          }
         },
         child: Container(
           // Container to hold Icon and Text
